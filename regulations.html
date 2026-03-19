@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regulations — CryptoReg Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0f1117; --surface: #181c27; --surface2: #1e2335; --border: #252d3d;
+    --accent: #10c9a0; --accent2: #4f8ef7; --warn: #f6a623; --danger: #e5534b;
+    --text: #c8cdd8; --muted: #7a8499; --head: #eef0f5; --green: #2fc77a; --red: #e5534b;
+  }
+  body { font-family: 'Inter','Segoe UI',system-ui,sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; font-size: 13px; }
+  a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+
+  /* TICKER */
+  .ticker-wrap { background: #0d1019; border-bottom: 1px solid var(--border); overflow: hidden; height: 28px; display: flex; align-items: center; }
+  .ticker-inner { display: flex; gap: 28px; animation: scroll 60s linear infinite; white-space: nowrap; padding-left: 100%; font-size: 12px; font-weight: 500; }
+  .ticker-inner:hover { animation-play-state: paused; }
+  @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .tick-item { display: flex; gap: 6px; align-items: center; }
+  .tick-sym { color: var(--head); font-weight: 700; font-size: 11px; }
+  .pos { color: var(--green); font-weight: 500; } .neg { color: var(--red); font-weight: 500; }
+
+  /* NAV */
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; height: 46px; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 8px rgba(0,0,0,0.4); }
+  .logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: 1.5px; margin-right: 28px; text-transform: uppercase; white-space: nowrap; }
+  nav a { color: #8d96aa; font-size: 13px; font-weight: 500; padding: 0 13px; height: 46px; display: flex; align-items: center; border-bottom: 2px solid transparent; white-space: nowrap; }
+  nav a:hover, nav a.active { color: var(--head); border-bottom-color: var(--accent); text-decoration: none; }
+  .nav-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .badge { background: var(--accent); color: #000; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 2px; letter-spacing: 1px; }
+
+  /* LAYOUT */
+  .container { max-width: 1400px; margin: 0 auto; padding: 20px 16px; }
+  .section-head { display: flex; align-items: baseline; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 14px; margin-top: 22px; }
+  .section-head:first-child { margin-top: 0; }
+  .section-head h1 { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--head); font-weight: 700; }
+  .section-head span { font-size: 12px; color: var(--muted); }
+
+  /* STAT ROW */
+  .stat-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  .stat-box { background: var(--surface); border: 1px solid var(--border); border-top: 2px solid var(--border); padding: 12px 16px; min-width: 130px; flex: 1; border-radius: 3px; }
+  .stat-box .label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); font-weight: 600; }
+  .stat-box .value { font-size: 22px; color: var(--head); font-weight: 700; margin-top: 4px; }
+  .stat-box .sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* CONTROLS */
+  .controls { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+  input[type=text], select { background: var(--surface); border: 1px solid var(--border); color: var(--head); padding: 7px 12px; font-family: inherit; font-size: 13px; outline: none; border-radius: 3px; }
+  input[type=text] { min-width: 260px; } input[type=text]::placeholder { color: var(--muted); }
+  input[type=text]:focus, select:focus { border-color: var(--accent); }
+  select option { background: var(--surface); color: var(--head); }
+
+  /* TABLE */
+  .tbl-wrap { overflow-x: auto; }
+  .section-box { background: var(--surface); border: 1px solid var(--border); border-radius: 3px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: var(--surface2); color: #99a3b5; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border); white-space: nowrap; font-weight: 600; }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:hover { background: var(--surface2); }
+  tbody td { padding: 8px 12px; vertical-align: middle; color: var(--text); }
+
+  /* PILLS */
+  .pill { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 2px; text-transform: uppercase; white-space: nowrap; }
+  .pill-legal    { background: #052e16; color: var(--green); border: 1px solid #166534; }
+  .pill-restrict { background: #451a03; color: var(--warn);  border: 1px solid #92400e; }
+  .pill-banned   { background: #450a0a; color: var(--red);   border: 1px solid #7f1d1d; }
+  .pill-unclear  { background: #1e1b4b; color: #a5b4fc;      border: 1px solid #3730a3; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 14px 20px; margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); background: var(--surface); }
+  footer a { color: var(--muted); } footer a:hover { color: var(--text); }
+  .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+  .disclaimer { font-size: 11px; color: #4e5a72; max-width: 520px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker-wrap"><div class="ticker-inner">
+  <span class="tick-item"><span class="tick-sym">BTC</span> $84,210.50 <span class="pos">+1.2%</span></span>
+  <span class="tick-item"><span class="tick-sym">ETH</span> $3,840.22 <span class="pos">+0.8%</span></span>
+  <span class="tick-item"><span class="tick-sym">BNB</span> $582.10 <span class="neg">-0.5%</span></span>
+  <span class="tick-item"><span class="tick-sym">SOL</span> $172.44 <span class="pos">+2.1%</span></span>
+  <span class="tick-item"><span class="tick-sym">XRP</span> $0.6230 <span class="neg">-1.3%</span></span>
+  <span class="tick-item"><span class="tick-sym">ADA</span> $0.4501 <span class="pos">+0.3%</span></span>
+  <span class="tick-item"><span class="tick-sym">AVAX</span> $38.55 <span class="pos">+1.7%</span></span>
+  <span class="tick-item"><span class="tick-sym">DOGE</span> $0.1412 <span class="neg">-2.0%</span></span>
+  <span class="tick-item"><span class="tick-sym">BTC</span> $84,210.50 <span class="pos">+1.2%</span></span>
+  <span class="tick-item"><span class="tick-sym">ETH</span> $3,840.22 <span class="pos">+0.8%</span></span>
+  <span class="tick-item"><span class="tick-sym">BNB</span> $582.10 <span class="neg">-0.5%</span></span>
+  <span class="tick-item"><span class="tick-sym">SOL</span> $172.44 <span class="pos">+2.1%</span></span>
+  <span class="tick-item"><span class="tick-sym">XRP</span> $0.6230 <span class="neg">-1.3%</span></span>
+  <span class="tick-item"><span class="tick-sym">ADA</span> $0.4501 <span class="pos">+0.3%</span></span>
+  <span class="tick-item"><span class="tick-sym">AVAX</span> $38.55 <span class="pos">+1.7%</span></span>
+  <span class="tick-item"><span class="tick-sym">DOGE</span> $0.1412 <span class="neg">-2.0%</span></span>
+</div></div>
+
+<!-- NAV -->
+<nav>
+  <a href="cryptoreg.html" class="logo">CryptoReg</a>
+  <a href="cryptoreg.html">Home</a>
+  <a href="regulations.html" class="active">Regulations</a>
+  <a href="news.html">News</a>
+  <a href="prices.html">Prices</a>
+  <a href="reg-bodies.html">Reg Bodies</a>
+  <a href="research.html">Research</a>
+  <a href="glossary.html">Glossary</a>
+  <div class="nav-right">
+    <span class="badge">LIVE</span>
+    <span style="color:var(--muted);font-size:11px">Updated: Mar 19, 2026 08:42 UTC</span>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- PAGE HEADER -->
+  <div class="section-head">
+    <h1>Crypto Regulations by Country</h1>
+    <span>78 jurisdictions tracked · Data as of Mar 2026</span>
+  </div>
+
+  <!-- STAT ROW -->
+  <div class="stat-row">
+    <div class="stat-box">
+      <div class="label">Countries Tracked</div>
+      <div class="value">78</div>
+      <div class="sub">Across 6 continents</div>
+    </div>
+    <div class="stat-box">
+      <div class="label">Legal</div>
+      <div class="value" style="color:var(--green)">42</div>
+      <div class="sub">Fully regulated</div>
+    </div>
+    <div class="stat-box">
+      <div class="label">Restricted</div>
+      <div class="value" style="color:var(--warn)">22</div>
+      <div class="sub">Partial bans / limits</div>
+    </div>
+    <div class="stat-box">
+      <div class="label">Banned</div>
+      <div class="value" style="color:var(--red)">14</div>
+      <div class="sub">Outright prohibited</div>
+    </div>
+    <div class="stat-box">
+      <div class="label">Unclear</div>
+      <div class="value" style="color:#a5b4fc">8</div>
+      <div class="sub">No formal framework</div>
+    </div>
+    <div class="stat-box">
+      <div class="label">Regions</div>
+      <div class="value">6</div>
+      <div class="sub">Asia · Europe · Americas · Africa · ME · Oceania</div>
+    </div>
+  </div>
+
+  <!-- FUTURE ENHANCEMENTS:
+  - Add Taxation Rules per country
+  - Add Licensing Requirements
+  - Add KYC/AML Details
+  - Add Stablecoin Regulations
+  - Add DeFi/NFT Policies
+  - Add Last Updated Date per entry
+  - Add Source Links / Citations
+  - Add country risk score
+  -->
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <input type="text" id="reg-search" placeholder="Search country, regulator…" oninput="filterReg()">
+    <select id="reg-status" onchange="filterReg()">
+      <option value="">All Statuses</option>
+      <option value="Legal">Legal</option>
+      <option value="Restricted">Restricted</option>
+      <option value="Banned">Banned</option>
+      <option value="Unclear">Unclear</option>
+    </select>
+    <select id="reg-region" onchange="filterReg()">
+      <option value="">All Regions</option>
+      <option value="Asia">Asia</option>
+      <option value="Europe">Europe</option>
+      <option value="Americas">Americas</option>
+      <option value="Africa">Africa</option>
+      <option value="Oceania">Oceania</option>
+      <option value="Middle East">Middle East</option>
+    </select>
+    <span id="reg-count" style="font-size:12px;color:var(--muted)"></span>
+  </div>
+
+  <!-- TABLE -->
+  <div class="tbl-wrap section-box">
+    <table>
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Region</th>
+          <th>Legal Status</th>
+          <th>Regulatory Bodies</th>
+          <th>Summary</th>
+        </tr>
+      </thead>
+      <tbody id="reg-body"></tbody>
+    </table>
+  </div>
+
+</div><!-- /container -->
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <span style="color:var(--accent);font-weight:700;letter-spacing:2px">CRYPTOREG</span>
+    <span style="margin-left:10px;color:var(--muted)">© 2026 CryptoReg Intelligence</span>
+  </div>
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms &amp; Conditions</a>
+    <a href="#">Disclaimer</a>
+    <a href="#">Cookie Policy</a>
+    <a href="#">Contact</a>
+    <a href="#">API Access</a>
+  </div>
+  <div class="disclaimer">This platform provides informational content only and not financial advice. Regulation data is for reference purposes; consult legal counsel for compliance decisions.</div>
+</footer>
+
+<script>
+const regs = [
+  { country:'🇺🇸 United States', region:'Americas', status:'Legal',      bodies:'SEC, CFTC, FinCEN, OCC', summary:'Crypto treated as property for tax. Securities debate ongoing. Exchange licensing varies by state. SAB 121 guidance active.' },
+  { country:'🇬🇧 United Kingdom', region:'Europe',  status:'Legal',      bodies:'FCA, Bank of England',   summary:'FCA registration mandatory for exchanges. Travel Rule enforced. New crypto promotions regime from 2024.' },
+  { country:'🇪🇺 European Union', region:'Europe',  status:'Legal',      bodies:'ESMA, EBA, National Competent Authorities', summary:'MiCA regulation fully in force. Comprehensive framework for CASPs, stablecoins (ART/EMT), and market abuse.' },
+  { country:'🇨🇳 China',          region:'Asia',    status:'Banned',     bodies:'PBoC, CSRC, MIIT',       summary:'All crypto trading and mining banned since 2021. Digital Yuan (e-CNY) is the only permitted digital currency.' },
+  { country:'🇮🇳 India',          region:'Asia',    status:'Restricted', bodies:'SEBI, RBI, FIU',          summary:'30% flat tax on crypto gains, 1% TDS. No banking ban but heavy regulatory uncertainty. VDA framework evolving.' },
+  { country:'🇯🇵 Japan',          region:'Asia',    status:'Legal',      bodies:'FSA',                     summary:'Crypto is legal property. Exchanges must register with FSA. Strict AML/KYC required. NFTs have unique classification.' },
+  { country:'🇸🇬 Singapore',      region:'Asia',    status:'Legal',      bodies:'MAS',                     summary:'Payment Services Act governs crypto. No capital gains tax. MAS licenses mandatory for DPT service providers.' },
+  { country:'🇦🇺 Australia',      region:'Oceania', status:'Legal',      bodies:'ASIC, AUSTRAC',           summary:'Exchanges registered with AUSTRAC. Crypto taxed as property (CGT). ASIC regulating crypto asset products.' },
+  { country:'🇨🇦 Canada',         region:'Americas',status:'Legal',      bodies:'OSC, FINTRAC, CSA',       summary:'Crypto trading platforms registered as MSBs. Securities law applies to most tokens. ETF products approved.' },
+  { country:'🇧🇷 Brazil',         region:'Americas',status:'Legal',      bodies:'CVM, BCB, BACEN',         summary:'Crypto legal since 2023 law. BCB oversees VASPs. Exchanges must register. Income tax on gains over R$35K.' },
+  { country:'🇷🇺 Russia',         region:'Europe',  status:'Restricted', bodies:'CBR, Rosfinmonitoring',   summary:'Mining legal. Trading restricted. Cannot use crypto for payments. CBR pushing for total ban; parliament resistant.' },
+  { country:'🇰🇷 South Korea',    region:'Asia',    status:'Restricted', bodies:'FSC, FSS, KFIU',          summary:'VASP registration mandatory. 20% tax on gains over 2.5M KRW from 2025. ICOs were banned; status evolving.' },
+  { country:'🇺🇦 Ukraine',        region:'Europe',  status:'Legal',      bodies:'NSSMC, NBU',              summary:'Crypto legal since 2022 law. VASP framework established. Ukraine accepted crypto donations during conflict.' },
+  { country:'🇵🇭 Philippines',    region:'Asia',    status:'Legal',      bodies:'BSP, SEC',                summary:'BSP licenses VASPs as virtual asset service providers. Sandbox regime for innovative products. P2P lending regulated.' },
+  { country:'🇿🇦 South Africa',   region:'Africa',  status:'Legal',      bodies:'FSCA, SARB',              summary:'FSCA declared crypto a financial product in 2022. FSP licences required. SARB monitors systemic risk.' },
+  { country:'🇸🇦 Saudi Arabia',   region:'Middle East',status:'Unclear', bodies:'SAMA, CMA',              summary:'No official legal framework. SAMA warns against use. Some discussion of CBDCs. Position remains unclear.' },
+  { country:'🇦🇪 UAE',            region:'Middle East',status:'Legal',   bodies:'VARA, FSRA, ADGM',       summary:'VARA in Dubai regulates crypto. ADGM in Abu Dhabi has own framework. Rapidly becoming global crypto hub.' },
+  { country:'🇸🇻 El Salvador',    region:'Americas',status:'Legal',      bodies:'BCR, Bitcoin Office',     summary:'Bitcoin is legal tender (since 2021). Volcano bonds issued. Chivo wallet provided by govt. IMF deal restricts mandatory BTC.' },
+  { country:'🇳🇬 Nigeria',        region:'Africa',  status:'Restricted', bodies:'SEC, CBN',                summary:'CBN lifted banking ban in 2023. New VASP rules under SEC. Largest P2P market in Africa. Naira stability concerns.' },
+  { country:'🇹🇷 Turkey',         region:'Europe',  status:'Restricted', bodies:'BDDK, SPK, MASAK',        summary:'Crypto cannot be used for payments (2021). Exchanges licensed by SPK. Travel Rule enforced. High adoption despite rules.' },
+  { country:'🇲🇽 Mexico',         region:'Americas',status:'Restricted', bodies:'CNBV, Banxico',           summary:'FinTech Law covers crypto. Only permitted institutions may operate. Banxico restrictive on retail use.' },
+  { country:'🇦🇷 Argentina',      region:'Americas',status:'Legal',      bodies:'CNV, BCRA',               summary:'No dedicated law but CNV registering exchanges. High adoption as inflation hedge. VASP AML rules effective.' },
+  { country:'🇨🇭 Switzerland',    region:'Europe',  status:'Legal',      bodies:'FINMA',                   summary:'Zug "Crypto Valley" hub. FINMA licenses DLT entities. Strict AML. Securities token framework mature.' },
+  { country:'🇵🇦 Panama',         region:'Americas',status:'Legal',      bodies:'No specific regulator',   summary:'Crypto legal for commerce (Law 2022). No capital gains tax on crypto. Lacks comprehensive regulatory framework.' },
+  { country:'🇹🇭 Thailand',       region:'Asia',    status:'Restricted', bodies:'SEC Thailand',            summary:'Digital asset businesses licensed by SEC. Crypto payments restricted for retail merchants since 2022.' },
+  { country:'🇻🇳 Vietnam',        region:'Asia',    status:'Unclear',    bodies:'SBV, MOF',                summary:'No clear legal framework. SBV prohibits crypto as payment. Government studying regulation. High P2P activity.' },
+  { country:'🇰🇿 Kazakhstan',     region:'Asia',    status:'Legal',      bodies:'AFSA, NBK',               summary:'AIFC financial centre has its own crypto framework. NBK licenses crypto exchanges. Mining major sector.' },
+  { country:'🇵🇰 Pakistan',       region:'Asia',    status:'Banned',     bodies:'SBP, SECP',               summary:'SBP circular prohibits crypto transactions. SECP proposed framework rejected. Mining also restricted.' },
+  { country:'🇮🇩 Indonesia',      region:'Asia',    status:'Restricted', bodies:'OJK, Bappebti',           summary:'Crypto treated as commodity, not currency. Bappebti registers exchanges. National exchange launched 2023.' },
+  { country:'🇲🇾 Malaysia',       region:'Asia',    status:'Legal',      bodies:'SC Malaysia, BNM',        summary:'Digital asset exchanges registered with SC. Securities rules apply to tokens. BNM monitors systemic risk.' },
+];
+
+function pillHTML(s) {
+  const c = {Legal:'pill-legal',Restricted:'pill-restrict',Banned:'pill-banned',Unclear:'pill-unclear'};
+  return `<span class="pill ${c[s]||'pill-unclear'}">${s}</span>`;
+}
+
+function buildReg(data) {
+  document.getElementById('reg-body').innerHTML = data.map(r => `
+    <tr>
+      <td><strong style="color:var(--head)">${r.country}</strong></td>
+      <td style="color:var(--muted);white-space:nowrap">${r.region}</td>
+      <td>${pillHTML(r.status)}</td>
+      <td style="color:var(--muted);font-size:12px">${r.bodies}</td>
+      <td style="font-size:12px">${r.summary}</td>
+    </tr>`).join('');
+  document.getElementById('reg-count').textContent = `Showing ${data.length} of ${regs.length} countries`;
+}
+
+function filterReg() {
+  const q = document.getElementById('reg-search').value.toLowerCase();
+  const s = document.getElementById('reg-status').value;
+  const r = document.getElementById('reg-region').value;
+  buildReg(regs.filter(x =>
+    (!q || x.country.toLowerCase().includes(q) || x.bodies.toLowerCase().includes(q) || x.summary.toLowerCase().includes(q)) &&
+    (!s || x.status === s) && (!r || x.region === r)
+  ));
+}
+
+buildReg(regs);
+</script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Reports — CryptoReg Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0f1117; --surface: #181c27; --surface2: #1e2335; --border: #252d3d;
+    --accent: #10c9a0; --accent2: #4f8ef7; --warn: #f6a623;
+    --text: #c8cdd8; --muted: #7a8499; --head: #eef0f5; --green: #2fc77a; --red: #e5534b;
+  }
+  body { font-family: 'Inter','Segoe UI',system-ui,sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; font-size: 13px; }
+  a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+
+  .ticker-wrap { background: #0d1019; border-bottom: 1px solid var(--border); overflow: hidden; height: 28px; display: flex; align-items: center; }
+  .ticker-inner { display: flex; gap: 28px; animation: scroll 60s linear infinite; white-space: nowrap; padding-left: 100%; font-size: 12px; font-weight: 500; }
+  .ticker-inner:hover { animation-play-state: paused; }
+  @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .tick-item { display: flex; gap: 6px; } .tick-sym { color: var(--head); font-weight: 700; font-size: 11px; }
+  .pos { color: var(--green); } .neg { color: var(--red); }
+
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; height: 46px; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 8px rgba(0,0,0,0.4); }
+  .logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: 1.5px; margin-right: 28px; text-transform: uppercase; white-space: nowrap; }
+  nav a { color: #8d96aa; font-size: 13px; font-weight: 500; padding: 0 13px; height: 46px; display: flex; align-items: center; border-bottom: 2px solid transparent; white-space: nowrap; }
+  nav a:hover, nav a.active { color: var(--head); border-bottom-color: var(--accent); text-decoration: none; }
+  .nav-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .badge { background: var(--accent); color: #000; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 2px; letter-spacing: 1px; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 20px 16px; }
+  .section-head { display: flex; align-items: baseline; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 14px; }
+  .section-head h1 { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--head); font-weight: 700; }
+  .section-head span { font-size: 12px; color: var(--muted); }
+
+  .controls { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; align-items: center; }
+  input[type=text], select { background: var(--surface); border: 1px solid var(--border); color: var(--head); padding: 7px 12px; font-family: inherit; font-size: 13px; outline: none; border-radius: 3px; }
+  input[type=text] { min-width: 280px; } input[type=text]::placeholder { color: var(--muted); }
+  input[type=text]:focus, select:focus { border-color: var(--accent); }
+  select option { background: var(--surface); color: var(--head); }
+
+  .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width: 800px) { .report-grid { grid-template-columns: 1fr; } }
+
+  .report-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: border-color 0.15s;
+  }
+  .report-card:hover { border-color: var(--accent2); }
+  .report-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .report-title { color: var(--head); font-size: 14px; font-weight: 600; line-height: 1.4; flex: 1; }
+  .report-cat { font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 2px 8px; border-radius: 2px; white-space: nowrap; flex-shrink: 0; }
+  .cat-regulation { background: #1c2a4a; color: #7eb3f8; border: 1px solid #1e3a6e; }
+  .cat-market     { background: #0f2e1f; color: #34d399; border: 1px solid #065f46; }
+  .cat-defi       { background: #1e1b4b; color: #a5b4fc; border: 1px solid #3730a3; }
+  .cat-cbdc       { background: #0a2a33; color: #67e8f9; border: 1px solid #155e75; }
+  .cat-taxation   { background: #2d1f07; color: #fbbf24; border: 1px solid #78350f; }
+  .cat-nft        { background: #2d0f20; color: #f9a8d4; border: 1px solid #831843; }
+  .cat-aml        { background: #2d0f0f; color: #f87171; border: 1px solid #7f1d1d; }
+  .report-meta { font-size: 12px; color: var(--muted); display: flex; gap: 12px; flex-wrap: wrap; }
+  .report-meta span { display: flex; align-items: center; gap: 4px; }
+  .report-summary { font-size: 13px; color: var(--text); line-height: 1.6; }
+  .report-footer { display: flex; gap: 10px; margin-top: 4px; }
+  .report-link { font-size: 12px; color: var(--accent); font-weight: 500; }
+  .report-link:hover { text-decoration: underline; }
+
+  footer { border-top: 1px solid var(--border); padding: 14px 20px; margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); background: var(--surface); }
+  footer a { color: var(--muted); } footer a:hover { color: var(--text); }
+  .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+  .disclaimer { font-size: 11px; color: #4e5a72; max-width: 520px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<div class="ticker-wrap"><div class="ticker-inner">
+  <span class="tick-item"><span class="tick-sym">BTC</span> $84,210.50 <span class="pos">+1.2%</span></span>
+  <span class="tick-item"><span class="tick-sym">ETH</span> $3,840.22 <span class="pos">+0.8%</span></span>
+  <span class="tick-item"><span class="tick-sym">SOL</span> $172.44 <span class="pos">+2.1%</span></span>
+  <span class="tick-item"><span class="tick-sym">BTC</span> $84,210.50 <span class="pos">+1.2%</span></span>
+  <span class="tick-item"><span class="tick-sym">ETH</span> $3,840.22 <span class="pos">+0.8%</span></span>
+  <span class="tick-item"><span class="tick-sym">SOL</span> $172.44 <span class="pos">+2.1%</span></span>
+</div></div>
+
+<nav>
+  <a href="cryptoreg.html" class="logo">CryptoReg</a>
+  <a href="cryptoreg.html">Home</a>
+  <a href="regulations.html">Regulations</a>
+  <a href="news.html">News</a>
+  <a href="prices.html">Prices</a>
+  <a href="reg-bodies.html">Reg Bodies</a>
+  <a href="research.html" class="active">Research</a>
+  <a href="glossary.html">Glossary</a>
+  <div class="nav-right">
+    <span class="badge">LIVE</span>
+    <span style="color:var(--muted);font-size:11px">Updated: Mar 19, 2026 08:42 UTC</span>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="section-head">
+    <h1>Research Reports</h1>
+    <span>Academic, government, and think-tank publications on crypto regulation</span>
+  </div>
+
+  <div class="controls">
+    <input type="text" id="rpt-search" placeholder="Search reports…" oninput="filterReports()">
+    <select id="rpt-cat" onchange="filterReports()">
+      <option value="">All Categories</option>
+      <option value="regulation">Regulation</option>
+      <option value="market">Market</option>
+      <option value="defi">DeFi</option>
+      <option value="cbdc">CBDC</option>
+      <option value="taxation">Taxation</option>
+      <option value="nft">NFT</option>
+      <option value="aml">AML</option>
+    </select>
+    <span id="rpt-count" style="font-size:12px;color:var(--muted)"></span>
+  </div>
+
+  <div class="report-grid" id="report-list"></div>
+</div>
+
+<footer>
+  <div><span style="color:var(--accent);font-weight:700;letter-spacing:2px">CRYPTOREG</span><span style="margin-left:10px;color:var(--muted)">© 2026 CryptoReg Intelligence</span></div>
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a><a href="#">Terms &amp; Conditions</a><a href="#">Disclaimer</a><a href="#">Cookie Policy</a><a href="#">Contact</a>
+  </div>
+  <div class="disclaimer">This platform provides informational content only and not financial advice.</div>
+</footer>
+
+<script>
+const reports = [
+  { title:'Global Crypto Regulation Outlook 2026', org:'CryptoReg Intelligence', date:'Mar 2026', pages:84, cat:'regulation', summary:'Comprehensive review of regulatory shifts across 78 jurisdictions, covering MiCA rollout, US legislative stalemate, and Asia-Pacific divergence. Includes risk scores for each jurisdiction.' },
+  { title:'MiCA Implementation: Six Months In — A Practitioner Assessment', org:'European Crypto Policy Forum', date:'Feb 2026', pages:56, cat:'regulation', summary:'Detailed analysis of early MiCA compliance challenges, CASP registration bottlenecks, and stablecoin issuer capital hurdles across the EU.' },
+  { title:'The Travel Rule Global Compliance Map 2026', org:'FATF / Egmont Group', date:'Jan 2026', pages:42, cat:'aml', summary:'Updated mapping of jurisdictions implementing FATF Recommendation 16; identifies coverage gaps, interoperability challenges, and best-practice models.' },
+  { title:'Crypto Taxation Frameworks: A 45-Country Comparative Study', org:'Tax Policy Centre & MIT Digital Currency Initiative', date:'Dec 2025', pages:110, cat:'taxation', summary:'Side-by-side comparison of capital gains treatment, staking income, DeFi yield, and NFT disposal rules across 45 countries.' },
+  { title:'DeFi and Regulatory Perimeters: Can Traditional Law Adapt?', org:'BIS Working Papers', date:'Nov 2025', pages:38, cat:'defi', summary:'BIS economists examine whether existing financial regulation can be applied to decentralized protocols and identify gaps where new law is needed.' },
+  { title:'Central Bank Digital Currencies: Progress Report Q4 2025', org:'Atlantic Council CBDC Tracker', date:'Oct 2025', pages:62, cat:'cbdc', summary:'134 countries now exploring CBDCs; 36 in pilot; 11 fully launched. Key case studies: e-CNY, Digital Euro, Digital Rupee, and Jamaica\'s JAM-DEX.' },
+  { title:'NFT Market Regulation: Emerging Frameworks and Open Questions', org:'World Economic Forum', date:'Sep 2025', pages:44, cat:'nft', summary:'WEF maps nascent NFT regulatory approaches focusing on securities classification, IP rights, money laundering risks, and creator royalty enforcement.' },
+  { title:'Crypto AML Risk Assessment: Exchange-Level Analysis 2025', org:'Chainalysis', date:'Aug 2025', pages:78, cat:'aml', summary:'Annual analysis of illicit funds flows through centralized and decentralized protocols; sanctions evasion patterns and mixing service usage highlighted.' },
+  { title:'Bitcoin as Legal Tender: El Salvador — A Three Year Review', org:'IMF Working Paper', date:'Jul 2025', pages:52, cat:'regulation', summary:'IMF assessment of El Salvador\'s Bitcoin Law three years in; covers adoption rates, fiscal risk, remittance corridor impact, and IMF deal compliance.' },
+  { title:'Stablecoin Regulatory Convergence: MiCA vs US vs Asia Compared', org:'Global Financial Markets Association', date:'Jun 2025', pages:66, cat:'regulation', summary:'Compares reserve requirements, audit obligations, and systemic designation triggers across MiCA, US draft bills, and Asian stablecoin frameworks.' },
+  { title:'DeFi Lending Protocol Risk: A Supervisory Perspective', org:'European Systemic Risk Board', date:'May 2025', pages:34, cat:'defi', summary:'ESRB assesses systemic risks from DeFi lending protocols including collateral volatility, liquidation cascades, and oracle manipulation vectors.' },
+  { title:'Crypto Institutional Adoption: 2025 Annual Survey', org:'CryptoReg Intelligence & PwC', date:'Apr 2025', pages:90, cat:'market', summary:'Survey of 480 institutional investors across 32 countries on crypto allocation strategy, regulatory concerns, custody preferences, and 2026 outlook.' },
+];
+
+function catClass(c) { return 'cat-' + c; }
+function catLabel(c) { return c.charAt(0).toUpperCase() + c.slice(1); }
+
+function buildReports(data) {
+  document.getElementById('report-list').innerHTML = data.map(r => `
+    <div class="report-card">
+      <div class="report-header">
+        <div class="report-title">${r.title}</div>
+        <span class="report-cat ${catClass(r.cat)}">${catLabel(r.cat)}</span>
+      </div>
+      <div class="report-meta">
+        <span>📌 ${r.org}</span>
+        <span>📅 ${r.date}</span>
+        <span>📄 ${r.pages} pages</span>
+      </div>
+      <div class="report-summary">${r.summary}</div>
+      <div class="report-footer">
+        <a class="report-link" href="#">Download PDF →</a>
+        <a class="report-link" href="#" style="color:var(--muted)">Executive Summary</a>
+      </div>
+    </div>`).join('');
+  document.getElementById('rpt-count').textContent = `${data.length} reports`;
+}
+
+function filterReports() {
+  const q = document.getElementById('rpt-search').value.toLowerCase();
+  const c = document.getElementById('rpt-cat').value;
+  buildReports(reports.filter(r =>
+    (!q || r.title.toLowerCase().includes(q) || r.org.toLowerCase().includes(q) || r.summary.toLowerCase().includes(q)) &&
+    (!c || r.cat === c)
+  ));
+}
+
+buildReports(reports);
+</script>
+</body>
+</html>

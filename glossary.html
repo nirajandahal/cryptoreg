@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glossary &amp; FAQ — CryptoReg Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0f1117; --surface: #181c27; --surface2: #1e2335; --border: #252d3d;
+    --accent: #10c9a0; --accent2: #4f8ef7; --warn: #f6a623;
+    --text: #c8cdd8; --muted: #7a8499; --head: #eef0f5; --green: #2fc77a; --red: #e5534b;
+  }
+  body { font-family: 'Inter','Segoe UI',system-ui,sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; font-size: 13px; }
+  a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+
+  .ticker-wrap { background: #0d1019; border-bottom: 1px solid var(--border); overflow: hidden; height: 28px; display: flex; align-items: center; }
+  .ticker-inner { display: flex; gap: 28px; animation: scroll 60s linear infinite; white-space: nowrap; padding-left: 100%; font-size: 12px; font-weight: 500; }
+  .ticker-inner:hover { animation-play-state: paused; }
+  @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .tick-item { display: flex; gap: 6px; } .tick-sym { color: var(--head); font-weight: 700; font-size: 11px; }
+  .pos { color: var(--green); } .neg { color: var(--red); }
+
+  nav { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 20px; height: 46px; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 8px rgba(0,0,0,0.4); }
+  .logo { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: 1.5px; margin-right: 28px; text-transform: uppercase; white-space: nowrap; }
+  nav a { color: #8d96aa; font-size: 13px; font-weight: 500; padding: 0 13px; height: 46px; display: flex; align-items: center; border-bottom: 2px solid transparent; white-space: nowrap; }
+  nav a:hover, nav a.active { color: var(--head); border-bottom-color: var(--accent); text-decoration: none; }
+  .nav-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+  .badge { background: var(--accent); color: #000; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 2px; letter-spacing: 1px; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px 16px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+  @media(max-width: 860px) { .two-col { grid-template-columns: 1fr; } }
+
+  .section-head { display: flex; align-items: baseline; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 14px; }
+  .section-head h1, .section-head h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--head); font-weight: 700; }
+  .section-head span { font-size: 12px; color: var(--muted); }
+
+  .controls { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+  input[type=text] { background: var(--surface); border: 1px solid var(--border); color: var(--head); padding: 7px 12px; font-family: inherit; font-size: 13px; outline: none; border-radius: 3px; width: 100%; }
+  input[type=text]::placeholder { color: var(--muted); }
+  input[type=text]:focus { border-color: var(--accent); }
+
+  /* GLOSSARY */
+  .gloss-letter { color: var(--accent); font-size: 15px; font-weight: 700; margin: 18px 0 6px; padding-left: 2px; border-left: 3px solid var(--accent); padding-left: 8px; }
+  .gloss-item { border-bottom: 1px solid var(--border); padding: 8px 0; }
+  .gloss-term { color: var(--head); font-size: 13px; font-weight: 600; }
+  .gloss-def { color: var(--text); font-size: 12px; margin-top: 3px; line-height: 1.5; }
+
+  /* ALPHABET NAV */
+  .alpha-nav { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+  .alpha-nav a { display: inline-block; font-size: 12px; font-weight: 600; color: var(--muted); padding: 3px 7px; border: 1px solid var(--border); border-radius: 2px; background: var(--surface); }
+  .alpha-nav a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+
+  /* FAQ ACCORDION */
+  .faq-section { margin-top: 0; }
+  .faq-category { color: var(--accent2); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin: 18px 0 8px; padding-left: 8px; border-left: 3px solid var(--accent2); }
+  .faq-item { border: 1px solid var(--border); border-radius: 3px; margin-bottom: 6px; overflow: hidden; background: var(--surface); }
+  .faq-q {
+    width: 100%; text-align: left; background: none; border: none; color: var(--head);
+    font-family: inherit; font-size: 13px; font-weight: 600; padding: 12px 16px;
+    cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    line-height: 1.4;
+  }
+  .faq-q:hover { background: var(--surface2); }
+  .faq-q.open { color: var(--accent); background: var(--surface2); border-bottom: 1px solid var(--border); }
+  .faq-icon { font-size: 16px; font-weight: 300; flex-shrink: 0; color: var(--muted); transition: transform 0.2s; }
+  .faq-q.open .faq-icon { transform: rotate(45deg); color: var(--accent); }
+  .faq-a { display: none; padding: 12px 16px; font-size: 13px; color: var(--text); line-height: 1.7; background: var(--surface2); border-top: 1px solid var(--border); }
+  .faq-a.open { display: block; }
+  .faq-a strong { color: var(--head); }
+  .faq-a a { color: var(--accent); }
+
+  /* PAGE TABS */
+  .page-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 18px; }
+  .tab-btn { background: none; border: none; color: var(--muted); font-family: inherit; font-size: 13px; font-weight: 500; padding: 8px 18px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  .tab-btn.active { color: var(--head); border-bottom-color: var(--accent); }
+  .tab-btn:hover { color: var(--head); }
+  .tab-panel { display: none; } .tab-panel.active { display: block; }
+
+  footer { border-top: 1px solid var(--border); padding: 14px 20px; margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); background: var(--surface); }
+  footer a { color: var(--muted); } footer a:hover { color: var(--text); }
+  .footer-links { display: flex; gap: 16px; flex-wrap: wrap; }
+  .disclaimer { font-size: 11px; color: #4e5a72; max-width: 520px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<div class="ticker-wrap"><div class="ticker-inner">
+  <span class="tick-item"><span class="tick-sym">BTC</span> $84,210.50 <span class="pos">+1.2%</span></span>
+  <span class="tick-item"><span class="tick-sym">ETH</span> $3,840.22 <span class="pos">+0.8%</span></span>
+  <span class="tick-item"><span class="tick-sym">SOL</span> $172.44 <span class="pos">+2.1%</span></span>
+  <span class="tick-item"><span class="tick-sym">BTC</span> $84,210.50 <span class="pos">+1.2%</span></span>
+  <span class="tick-item"><span class="tick-sym">ETH</span> $3,840.22 <span class="pos">+0.8%</span></span>
+  <span class="tick-item"><span class="tick-sym">SOL</span> $172.44 <span class="pos">+2.1%</span></span>
+</div></div>
+
+<nav>
+  <a href="cryptoreg.html" class="logo">CryptoReg</a>
+  <a href="cryptoreg.html">Home</a>
+  <a href="regulations.html">Regulations</a>
+  <a href="news.html">News</a>
+  <a href="prices.html">Prices</a>
+  <a href="reg-bodies.html">Reg Bodies</a>
+  <a href="research.html">Research</a>
+  <a href="glossary.html" class="active">Glossary</a>
+  <div class="nav-right">
+    <span class="badge">LIVE</span>
+    <span style="color:var(--muted);font-size:11px">Updated: Mar 19, 2026 08:42 UTC</span>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- PAGE TABS -->
+  <div class="page-tabs">
+    <button class="tab-btn active" onclick="showTab('glossary',this)">📘 Glossary</button>
+    <button class="tab-btn" onclick="showTab('faq',this)">❓ FAQs</button>
+  </div>
+
+  <!-- ── GLOSSARY TAB ── -->
+  <div class="tab-panel active" id="tab-glossary">
+    <div class="section-head">
+      <h1>Crypto &amp; Regulatory Glossary</h1>
+      <span>25 terms · Definitions for investors, researchers, and compliance teams</span>
+    </div>
+
+    <div class="controls">
+      <input type="text" id="gloss-search" placeholder="Search term or definition…" oninput="filterGloss()">
+    </div>
+
+    <div class="alpha-nav" id="alpha-nav"></div>
+    <div id="gloss-list"></div>
+  </div>
+
+  <!-- ── FAQ TAB ── -->
+  <div class="tab-panel" id="tab-faq">
+    <div class="section-head">
+      <h1>Frequently Asked Questions</h1>
+      <span>Common questions on crypto regulation, compliance, and market structure</span>
+    </div>
+
+    <div class="controls">
+      <input type="text" id="faq-search" placeholder="Search questions…" oninput="filterFAQ()">
+    </div>
+
+    <div id="faq-list"></div>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  <div><span style="color:var(--accent);font-weight:700;letter-spacing:2px">CRYPTOREG</span><span style="margin-left:10px;color:var(--muted)">© 2026 CryptoReg Intelligence</span></div>
+  <div class="footer-links">
+    <a href="#">Privacy Policy</a><a href="#">Terms &amp; Conditions</a><a href="#">Disclaimer</a><a href="#">Cookie Policy</a><a href="#">Contact</a>
+  </div>
+  <div class="disclaimer">This platform provides informational content only and not financial advice. Consult a legal or compliance professional for jurisdiction-specific guidance.</div>
+</footer>
+
+<script>
+/* ── TAB SWITCHING ── */
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ── GLOSSARY ── */
+const glossTerms = [
+  { term:'AML',         def:'Anti-Money Laundering. Regulations requiring crypto businesses to monitor, detect, and report suspicious fund flows to financial intelligence units.' },
+  { term:'CASP',        def:'Crypto Asset Service Provider. The MiCA term for regulated crypto businesses operating in the EU; covers exchanges, custodians, and advisers.' },
+  { term:'CBDC',        def:'Central Bank Digital Currency. A digital form of a country\'s fiat currency issued and backed by the central bank (e.g., e-CNY, Digital Euro).' },
+  { term:'CEX',         def:'Centralized Exchange. A crypto trading platform operated by a company that holds customer funds in custody (e.g., Coinbase, Binance).' },
+  { term:'DeFi',        def:'Decentralized Finance. Financial protocols running on public blockchains without centralized intermediaries; includes DEXs, lending protocols, and yield farms.' },
+  { term:'DPT',         def:'Digital Payment Token. Singapore MAS terminology for cryptocurrencies regulated under the Payment Services Act; requires MPI licence to deal in.' },
+  { term:'FATF',        def:'Financial Action Task Force. The intergovernmental body that sets global AML/CFT standards for VASPs; author of the Travel Rule (Recommendation 16).' },
+  { term:'FCA',         def:'Financial Conduct Authority. The UK financial regulator responsible for crypto asset firm registration, promotions approval, and Travel Rule compliance.' },
+  { term:'FinCEN',      def:'Financial Crimes Enforcement Network. US Treasury bureau overseeing AML compliance for crypto money service businesses under the Bank Secrecy Act.' },
+  { term:'FSA',         def:'Financial Services Agency. Japan\'s top financial regulator overseeing licensed crypto exchanges, stablecoin issuers, and NFT classification.' },
+  { term:'Howey Test',  def:'US legal test determining if an asset is a security: investment of money in a common enterprise with a reasonable expectation of profit from others\' efforts.' },
+  { term:'KYC',         def:'Know Your Customer. Identity verification process required of exchanges and crypto service providers to verify customer identity before onboarding.' },
+  { term:'MAS',         def:'Monetary Authority of Singapore. Regulates crypto under the Payment Services Act via Major Payment Institution licences; no capital gains tax jurisdiction.' },
+  { term:'MiCA',        def:'Markets in Crypto Assets Regulation. The EU\'s comprehensive crypto regulatory framework effective from 2024; governs CASPs, stablecoins, and market abuse.' },
+  { term:'MSB',         def:'Money Service Business. A US financial business category requiring FinCEN registration; includes most crypto exchanges and wallet providers.' },
+  { term:'NFT',         def:'Non-Fungible Token. A blockchain-based token representing unique ownership of a digital or physical asset; regulatory treatment varies by jurisdiction.' },
+  { term:'OTC',         def:'Over-the-Counter. Peer-to-peer crypto trading outside formal exchanges, often used for large block trades to avoid market impact.' },
+  { term:'SAR',         def:'Suspicious Activity Report. A mandatory filing by crypto businesses to their financial intelligence unit when suspicious transactions are identified.' },
+  { term:'SEC',         def:'Securities and Exchange Commission. US regulator that asserts many crypto tokens are unregistered securities subject to federal securities law.' },
+  { term:'Stablecoin',  def:'A crypto asset designed to maintain a stable value, typically pegged to USD or gold. Includes USDT, USDC, and DAI. Heavily regulated under MiCA (ART/EMT).' },
+  { term:'Travel Rule', def:'FATF Recommendation 16 requiring VASPs to share originator and beneficiary information for crypto transfers above jurisdiction-specific thresholds.' },
+  { term:'VASP',        def:'Virtual Asset Service Provider. The FATF\'s umbrella term for crypto businesses subject to AML/CFT obligations globally; includes exchanges, custodians, and brokers.' },
+  { term:'VDA',         def:'Virtual Digital Asset. India\'s legal term for cryptocurrencies under the Income Tax Act; subject to 30% flat tax on gains and 1% TDS.' },
+  { term:'Wallet',      def:'Software or hardware storing cryptographic keys enabling crypto access. "Hosted" (custodial) wallets held by exchanges; "unhosted" (self-custody) by individuals.' },
+  { term:'Whitepaper',  def:'A technical document describing a crypto project\'s purpose, tokenomics, and technology. Required under MiCA for public crypto asset offerings in the EU.' },
+].sort((a, b) => a.term.localeCompare(b.term));
+
+let glossData = [...glossTerms];
+
+function buildGloss(data) {
+  let html = '', cur = '';
+  const letters = [...new Set(data.map(g => g.term[0].toUpperCase()))];
+  data.forEach(g => {
+    const l = g.term[0].toUpperCase();
+    if (l !== cur) { cur = l; html += `<div class="gloss-letter" id="gloss-${l}">${l}</div>`; }
+    html += `<div class="gloss-item"><div class="gloss-term">${g.term}</div><div class="gloss-def">${g.def}</div></div>`;
+  });
+  document.getElementById('gloss-list').innerHTML = html || '<div style="color:var(--muted);padding:20px 0">No terms match your search.</div>';
+
+  // Alpha nav
+  const allLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  document.getElementById('alpha-nav').innerHTML = allLetters.map(l =>
+    letters.includes(l)
+      ? `<a href="#gloss-${l}" onclick="return scrollTo_(event,'gloss-${l}')">${l}</a>`
+      : `<span style="display:inline-block;font-size:12px;color:#2e3649;padding:3px 7px;border:1px solid #1a2030;border-radius:2px;background:var(--bg)">${l}</span>`
+  ).join('');
+}
+
+function scrollTo_(e, id) {
+  e.preventDefault();
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  return false;
+}
+
+function filterGloss() {
+  const q = document.getElementById('gloss-search').value.toLowerCase();
+  buildGloss(q ? glossTerms.filter(g => g.term.toLowerCase().includes(q) || g.def.toLowerCase().includes(q)) : glossTerms);
+}
+
+/* ── FAQ DATA ── */
+const faqs = [
+  {
+    cat: 'Understanding Crypto Regulation',
+    items: [
+      { q:'What is crypto regulation and why does it matter?', a:'Crypto regulation refers to laws and rules governments use to govern cryptocurrencies, exchanges, and related services. It matters because it affects legality of use, tax obligations, consumer protection, and institutional adoption. Without clear rules, users and businesses face legal uncertainty, and bad actors exploit gaps to launder money or commit fraud.' },
+      { q:'Is crypto legal everywhere?', a:'No. As of March 2026, crypto is <strong>fully legal and regulated</strong> in around 42 countries (including the US, EU, UK, Japan, Singapore), <strong>restricted</strong> in 22 (India, Russia, Turkey), and <strong>banned outright</strong> in approximately 14 jurisdictions including China and Pakistan. About 8 countries have no formal legal framework at all.' },
+      { q:'What is the difference between a ban and a restriction?', a:'A <strong>ban</strong> means crypto transactions, trading, and often ownership are prohibited by law — China and Pakistan are examples. A <strong>restriction</strong> means crypto is legal but limited: you may be unable to use it as payment, or banks may be restricted from serving exchanges, or heavy taxes may apply. India taxes crypto gains at 30% but does not ban ownership.' },
+      { q:'What does "regulated" mean for a crypto exchange?', a:'A regulated exchange has registered with or obtained a licence from a financial authority (e.g., FCA in the UK, MAS in Singapore, FSA in Japan). This means it must follow AML/KYC rules, segregate customer funds, submit to audits, and comply with consumer protection standards. Unregulated exchanges operate without these safeguards.' },
+    ]
+  },
+  {
+    cat: 'MiCA & European Union',
+    items: [
+      { q:'What is MiCA and who does it apply to?', a:'MiCA (Markets in Crypto Assets Regulation) is the EU\'s comprehensive crypto law that came into full force in 2024. It applies to <strong>Crypto Asset Service Providers (CASPs)</strong> — exchanges, custodians, portfolio managers, and advisers operating in EU member states. It also covers stablecoin issuers (ART and EMT categories) and lays out market abuse rules.' },
+      { q:'Do non-EU companies need to comply with MiCA?', a:'Yes, if you offer services to EU customers. MiCA has extraterritorial reach similar to GDPR. Foreign exchanges actively marketing to EU residents or accepting EU-based customers must register as a CASP in at least one EU member state or use a licensed EU entity as a gateway.' },
+      { q:'What is the MiCA Travel Rule?', a:'The MiCA Travel Rule (based on FATF Recommendation 16) requires CASPs to include originator and beneficiary information in crypto transfers of €1,000 or more. Phase 2 enforcement began March 2026. CASPs must screen counterparty VASPs and cannot process transfers from unregistered, unhosted wallet addresses without enhanced due diligence.' },
+      { q:'What are ART and EMT under MiCA?', a:'<strong>ART</strong> (Asset-Referenced Token) is a stablecoin backed by a basket of assets (currencies, commodities, or other crypto). <strong>EMT</strong> (E-Money Token) is a stablecoin pegged to a single fiat currency like EUR or USD. Both require authorisation from a national competent authority, 100% reserve backing, and daily attestation of reserves.' },
+    ]
+  },
+  {
+    cat: 'AML & Compliance',
+    items: [
+      { q:'What is the FATF Travel Rule?', a:'FATF\'s Travel Rule (Recommendation 16) requires Virtual Asset Service Providers (VASPs) to collect and transmit originator and beneficiary information for crypto transfers above a threshold (typically $1,000/€1,000). The data must "travel" with the transaction. This mirrors rules long applied to wire transfers in traditional banking.' },
+      { q:'What is KYC and why is it required?', a:'KYC (Know Your Customer) is the process of verifying a user\'s identity before providing financial services. It typically involves collecting government ID, proof of address, and sometimes source-of-funds information. Regulated crypto exchanges require KYC to comply with AML laws and prevent their platforms being used for money laundering, terrorism financing, or sanctions evasion.' },
+      { q:'What is a SAR and when must one be filed?', a:'A SAR (Suspicious Activity Report) is a mandatory report filed with a country\'s financial intelligence unit (e.g., FinCEN in the US, NCA in the UK) when a crypto business suspects a transaction involves criminal activity. Common triggers include unusual transaction patterns, transactions with sanctioned addresses, structuring to avoid thresholds, and identity verification failures.' },
+      { q:'Are DeFi protocols subject to AML rules?', a:'Increasingly, yes. The FATF\'s updated 2026 guidance states that DeFi developers who retain admin control — such as upgrade keys, fee-setting authority, or governance control — may qualify as VASPs and bear AML obligations. Truly decentralized protocols with no controlling party remain in a grey area, but regulators worldwide are moving to close this gap.' },
+    ]
+  },
+  {
+    cat: 'Taxation',
+    items: [
+      { q:'Is crypto taxed the same everywhere?', a:'No — tax treatment varies widely. In the <strong>US</strong>, crypto is property; capital gains tax applies on disposal. In the <strong>UK</strong>, similar CGT rules apply with a £3,000 annual allowance. <strong>Germany</strong> exempts gains after 1 year of holding. <strong>India</strong> taxes at a flat 30% with no deductions. <strong>Singapore</strong> and the <strong>UAE</strong> have no capital gains tax on crypto.' },
+      { q:'Is staking income taxable?', a:'In most jurisdictions, yes. The US IRS treats staking rewards as ordinary income at the time of receipt. The UK HMRC similarly taxes staking income. However, the specific rate depends on the amount and your tax bracket. Some countries offer exemptions for small amounts or classify them as capital gains rather than income. Always check local rules.' },
+      { q:'Do I need to report crypto to tax authorities?', a:'In most regulated jurisdictions, yes. The US requires crypto to be reported on Form 1040 (Schedule D) and Form 1099-DA from 2025. The UK requires Self Assessment disclosure. India requires declaration under VDA rules. Failure to report can result in penalties, back taxes, and in serious cases, criminal charges. Many tax authorities now receive transaction data directly from exchanges.' },
+    ]
+  },
+  {
+    cat: 'CBDCs & Stablecoins',
+    items: [
+      { q:'What is a CBDC and how is it different from crypto?', a:'A CBDC (Central Bank Digital Currency) is a digital form of a country\'s official currency, issued and guaranteed by the central bank. Unlike decentralized crypto, a CBDC is centralized, government-controlled, and not volatile — it is simply a digital version of cash. China\'s e-CNY and the upcoming Digital Euro are examples. As of 2026, 134 countries are exploring CBDCs, 11 have fully launched.' },
+      { q:'Are stablecoins safe and regulated?', a:'Stablecoins vary significantly in safety. <strong>Fiat-backed</strong> stablecoins (USDC, USDT) are generally safer as they claim 100% reserves, though audit quality varies. <strong>Algorithmic</strong> stablecoins (like the collapsed TerraUSD) carry much higher risk. Under MiCA, EU stablecoin issuers must maintain 100% reserves, publish daily attestations, and meet strict capital requirements — significantly improving consumer protection.' },
+      { q:'Can I use stablecoins for payments legally?', a:'It depends on the jurisdiction. The <strong>US, UK, EU, and Singapore</strong> permit stablecoin payments with appropriate licences. <strong>Turkey</strong> bans using any crypto including stablecoins for payments. <strong>China</strong> prohibits all crypto payments; only the e-CNY is permitted. In many countries without clear frameworks, stablecoins exist in a legal grey area.' },
+    ]
+  },
+  {
+    cat: 'Using This Platform',
+    items: [
+      { q:'How current is the regulation data on CryptoReg?', a:'CryptoReg aims to update regulatory data within 72 hours of significant regulatory changes. The "Updated" timestamp shown at the top of each page reflects the last data review. For critical compliance decisions, always verify with official government sources or qualified legal counsel, as regulations can change rapidly.' },
+      { q:'Is the information on CryptoReg legal or financial advice?', a:'No. CryptoReg provides informational content only. Nothing on this platform constitutes legal advice, financial advice, or a recommendation to buy, sell, or hold any asset. Always consult a qualified lawyer for compliance matters and a licensed financial adviser for investment decisions.' },
+      { q:'Can I access CryptoReg\'s data via API?', a:'API access is available for institutional subscribers. The CryptoReg Data API provides programmatic access to regulation tables, regulatory body listings, and regulatory alert feeds in JSON format. Contact us at the link in the footer for pricing and documentation.' },
+    ]
+  },
+];
+
+function buildFAQ(data) {
+  document.getElementById('faq-list').innerHTML = data.map(cat => `
+    <div class="faq-category">${cat.cat}</div>
+    ${cat.items.map((item, i) => `
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFAQ(this)">
+        <span>${item.q}</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">${item.a}</div>
+    </div>`).join('')}`).join('');
+}
+
+function toggleFAQ(btn) {
+  const ans = btn.nextElementSibling;
+  const isOpen = btn.classList.contains('open');
+  // close all
+  document.querySelectorAll('.faq-q.open').forEach(b => { b.classList.remove('open'); b.nextElementSibling.classList.remove('open'); });
+  if (!isOpen) { btn.classList.add('open'); ans.classList.add('open'); }
+}
+
+function filterFAQ() {
+  const q = document.getElementById('faq-search').value.toLowerCase();
+  if (!q) { buildFAQ(faqs); return; }
+  buildFAQ(faqs.map(cat => ({
+    cat: cat.cat,
+    items: cat.items.filter(item => item.q.toLowerCase().includes(q) || item.a.toLowerCase().includes(q))
+  })).filter(cat => cat.items.length));
+}
+
+/* ── INIT ── */
+buildGloss(glossTerms);
+buildFAQ(faqs);
+</script>
+</body>
+</html>
